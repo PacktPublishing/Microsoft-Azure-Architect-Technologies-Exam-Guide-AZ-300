@@ -33,6 +33,50 @@ $pip = New-AzPublicIpAddress `
   -Name PacktAGPublicIPAddress `
   -AllocationMethod Dynamic
 
+#Create the VMs
+$vnet = Get-AzVirtualNetwork -ResourceGroupName PacktApplicationGateway -Name PacktVNet
+$cred = Get-Credential
+for ($i=1; $i -le 2; $i++)
+{
+# Create a virtual machine
+  $nic = New-AzNetworkInterface `
+    -Name PacktNic$i `
+    -ResourceGroupName PacktApplicationGateway `    -Location eastus `
+    -SubnetId $vnet.Subnets[1].Id
+  $vm = New-AzVMConfig `
+    -VMName PacktVM$i `
+    -VMSize Standard_D2
+  $vm = Set-AzVMOperatingSystem `
+    -VM $vm `
+    -Windows `
+    -ComputerName PAcktVM$i `
+    -Credential $cred `
+    -ProvisionVMAgent
+  $vm = Set-AzVMSourceImage `
+    -VM $vm `
+    -PublisherName MicrosoftWindowsServer `
+    -Offer WindowsServer `
+    -Skus 2016-Datacenter `
+    -Version latest
+  $vm = Add-AzVMNetworkInterface `
+    -VM $vm `
+    -Id $nic.Id
+  $vm = Set-AzVMBootDiagnostic `
+    -VM $vm `
+    -Disable
+
+  New-AzVM -ResourceGroupName PacktApplicationGateway -Location eastus -VM $vm 
+  Set-AzVMExtension `
+    -ResourceGroupName PacktApplicationGateway `
+    -ExtensionName IIS `
+    -VMName PacktVM$i `
+    -Publisher Microsoft.Compute `
+    -ExtensionType CustomScriptExtension `
+    -TypeHandlerVersion 1.4 `
+    -SettingString '{"commandToExecute":"powershell Add-WindowsFeature Web-Server; powershell Add-Content -Path \"C:\\inetpub\\wwwroot\\Default.htm\" -Value $($env:computername)"}' `
+    -Location EastUS
+}
+
 # Create IP configurations and frontend port
 $vnet = Get-AzVirtualNetwork `
   -ResourceGroupName PacktApplicationGateway `
@@ -49,8 +93,12 @@ $frontendport = New-AzApplicationGatewayFrontendPort `
   -Port 80
 
 # Create the backend pool and settings
+$address1 = Get-AzNetworkInterface -ResourceGroupName PacktApplicationGateway -Name PacktNic1
+$address2 = Get-AzNetworkInterface -ResourceGroupName PacktApplicationGateway -Name PacktNic2
+
 $backendPool = New-AzApplicationGatewayBackendAddressPool `
-  -Name PacktGBackendPool 
+  -Name PacktGBackendPool `
+  -BackendIPAddresses $address1.ipconfigurations[0].privateipaddress, $address2.ipconfigurations[0].privateipaddress
 $poolSettings = New-AzApplicationGatewayBackendHttpSettings `
   -Name PacktPoolSettings `
   -Port 80 `
@@ -87,49 +135,7 @@ New-AzApplicationGateway `
   -RequestRoutingRules $frontendRule `
   -Sku $sku
 
-  #Create the VMs
-$vnet = Get-AzVirtualNetwork -ResourceGroupName PacktApplicationGateway -Name PacktVNet
-$cred = Get-Credential
-for ($i=1; $i -le 2; $i++)
-{
-# Create a virtual machine
-  $nic = New-AzNetworkInterface `
-    -Name PacktNic$i `
-    -ResourceGroupName PacktApplicationGateway `    -Location eastus `
-    -SubnetId $vnet.Subnets[1].Id
-  $vm = New-AzVMConfig `
-    -VMName PacktVM$i `
-    -VMSize Standard_D2
-  $vm = Set-AzVMOperatingSystem `
-    -VM $vm `
-    -Windows `
-    -ComputerName PAcktVM$i `
-    -Credential $cred `
-    -ProvisionVMAgent
-  $vm = Set-AzVMSourceImage `
-    -VM $vm `
-    -PublisherName MicrosoftWindowsServer `
-    -Offer WindowsServer `
-    -Skus 2016-Datacenter `
-    -Version latest
-  $vm = Add-AzVMNetworkInterface `
-    -VM $vm `
-    -Id $nic.Id
-  $vm = Set-AzVMBootDiagnostics `
-    -VM $vm `
-    -Disable
 
-  New-AzVM -ResourceGroupName PacktApplicationGateway -Location eastus -VM $vm 
-  Set-AzVMExtension `
-    -ResourceGroupName PacktApplicationGateway `
-    -ExtensionName IIS `
-    -VMName PacktVM$i `
-    -Publisher Microsoft.Compute `
-    -ExtensionType CustomScriptExtension `
-    -TypeHandlerVersion 1.4 `
-    -SettingString '{"commandToExecute":"powershell Add-WindowsFeature Web-Server; powershell Add-Content -Path \"C:\\inetpub\\wwwroot\\Default.htm\" -Value $($env:computername)"}' `
-    -Location EastUS
-}
 
 # Get the IP address
 Get-AzPublicIPAddress -ResourceGroupName PacktApplicationGateway -Name PacktAGPublicIPAddress

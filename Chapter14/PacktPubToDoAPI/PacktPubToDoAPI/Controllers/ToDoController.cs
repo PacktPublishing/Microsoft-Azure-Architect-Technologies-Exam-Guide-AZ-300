@@ -5,8 +5,9 @@ using System.Linq;
 
 namespace PacktPubToDoAPI.Controllers
 {
-    [Route("api/ToDo")]
-    public class TodoController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class TodoController : ControllerBase
     {
         private readonly TodoContext _context;
 

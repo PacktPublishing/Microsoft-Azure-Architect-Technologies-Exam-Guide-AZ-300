@@ -1,0 +1,11 @@
+C:\Users\SjoukjeZaal\Documents\Visual Studio 2017\Projects\PacktPubToDoAPI\PacktPubToDoAPI\bin\Debug\netcoreapp2.0\PacktPubToDoAPI.deps.json
+C:\Users\SjoukjeZaal\Documents\Visual Studio 2017\Projects\PacktPubToDoAPI\PacktPubToDoAPI\bin\Debug\netcoreapp2.0\PacktPubToDoAPI.runtimeconfig.json
+C:\Users\SjoukjeZaal\Documents\Visual Studio 2017\Projects\PacktPubToDoAPI\PacktPubToDoAPI\bin\Debug\netcoreapp2.0\PacktPubToDoAPI.runtimeconfig.dev.json
+C:\Users\SjoukjeZaal\Documents\Visual Studio 2017\Projects\PacktPubToDoAPI\PacktPubToDoAPI\bin\Debug\netcoreapp2.0\PacktPubToDoAPI.dll
+C:\Users\SjoukjeZaal\Documents\Visual Studio 2017\Projects\PacktPubToDoAPI\PacktPubToDoAPI\bin\Debug\netcoreapp2.0\PacktPubToDoAPI.pdb
+C:\Users\SjoukjeZaal\Documents\Visual Studio 2017\Projects\PacktPubToDoAPI\PacktPubToDoAPI\obj\Debug\netcoreapp2.0\PacktPubToDoAPI.csprojResolveAssemblyReference.cache
+C:\Users\SjoukjeZaal\Documents\Visual Studio 2017\Projects\PacktPubToDoAPI\PacktPubToDoAPI\obj\Debug\netcoreapp2.0\PacktPubToDoAPI.csproj.CoreCompileInputs.cache
+C:\Users\SjoukjeZaal\Documents\Visual Studio 2017\Projects\PacktPubToDoAPI\PacktPubToDoAPI\obj\Debug\netcoreapp2.0\PacktPubToDoAPI.AssemblyInfoInputs.cache
+C:\Users\SjoukjeZaal\Documents\Visual Studio 2017\Projects\PacktPubToDoAPI\PacktPubToDoAPI\obj\Debug\netcoreapp2.0\PacktPubToDoAPI.AssemblyInfo.cs
+C:\Users\SjoukjeZaal\Documents\Visual Studio 2017\Projects\PacktPubToDoAPI\PacktPubToDoAPI\obj\Debug\netcoreapp2.0\PacktPubToDoAPI.dll
+C:\Users\SjoukjeZaal\Documents\Visual Studio 2017\Projects\PacktPubToDoAPI\PacktPubToDoAPI\obj\Debug\netcoreapp2.0\PacktPubToDoAPI.pdb

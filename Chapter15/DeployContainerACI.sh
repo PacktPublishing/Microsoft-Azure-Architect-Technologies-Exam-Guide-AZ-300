@@ -3,17 +3,17 @@ az group create \
 	--name PacktACIResourceGroup \
 	--location eastus
 
-#Create a container
+#Create a container and push the image
 az container create \
+	--name packtaciapp \
 	--resource-group PacktACIResourceGroup \
-	--name packtcontainer \
-	--image mcr.microsoft.com/azuredocs/aci-helloworld \
-	--dns-name-label packt-aci-demo \
-	--ports 80
+	--os-type linux \
+	--image packtaciapp20190917053041.azurecr.io/packtaciapp:latest \
+	--ip-address public
 
 #Show status of container
 az container show \
 	--resource-group PacktACIResourceGroup \
-	--name packtcontainer \
+	--name packtaciapp \
 	--query "{FQDN:ipAddress.fqdn,ProvisioningState:provisioningState}" \
 	--out table

@@ -2,7 +2,7 @@
 Connect-AzAccount
 
 # Select the subscription to deploy the App to.
-Select-AzSubscription -SubscriptionId "********-****-****-****-***********"
+Get-AzSubscription -SubscriptionId "********-****-****-****-***********"
 
 #Set some paramaters
 $ResourceGroupName = 'PacktVMResourceGroup'

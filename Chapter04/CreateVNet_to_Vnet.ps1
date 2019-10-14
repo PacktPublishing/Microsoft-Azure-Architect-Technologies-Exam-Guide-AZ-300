@@ -1,6 +1,6 @@
 ﻿Connect-AzAccount
 
-Select-AzSubscription -SubscriptionId "********-****-****-****-***********"
+Get-AzSubscription -SubscriptionId "********-****-****-****-***********"
 
 #Create first VNet
 #Define variables

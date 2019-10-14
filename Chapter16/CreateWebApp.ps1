@@ -2,7 +2,7 @@
 Connect-AzAccount
 
 #Select the subscription to deploy the App to.
-Select-AzSubscription -SubscriptionId "********-****-****-****-***********"
+Get-AzSubscription -SubscriptionId "********-****-****-****-***********"
 
 #URL to the sample application on GitHub
 $gitrepo="https://github.com/Azure-Samples/app-service-web-dotnet-get-started.git"

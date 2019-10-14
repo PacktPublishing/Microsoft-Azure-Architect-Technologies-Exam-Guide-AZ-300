@@ -2,7 +2,7 @@
 Connect-AzAccount
 
 # Select the subscription to deploy the App to.
-Select-AzSubscription -SubscriptionId "********-****-****-****-***********"
+Get-AzSubscription -SubscriptionId "********-****-****-****-***********"
 
 #Create a resource group
 New-AzResourceGroup -Name PacktLogicAppResourceGroup -Location EastUS

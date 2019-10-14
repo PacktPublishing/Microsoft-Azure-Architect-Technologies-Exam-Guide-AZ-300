@@ -1,7 +1,7 @@
 ﻿Connect-AzAccount
 
 #If necessary, select the right subscription:
-Select-AzSubscription -SubscriptionId "********-****-****-****-***********"
+Get-AzSubscription -SubscriptionId "********-****-****-****-***********"
 
 #retrieve VNet and subnet configuration
 $vnet = Get-AzVirtualNetwork -Name PacktVirtualNetwork -ResourceGroupName PacktVNetResourceGroup

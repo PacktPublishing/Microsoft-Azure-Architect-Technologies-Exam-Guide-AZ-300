@@ -124,7 +124,7 @@ namespace PacktCosmosApp
             }
             catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
             {
-                // Create an item in the container representing the Zaal family. Note we provide the value of the partition key for this item, which is "Andersen"
+                // Create an item in the container representing the Zaal family. Note we provide the value of the partition key for this item, which is "Zaal"
                 ItemResponse<Family> zaalFamilyResponse = await this.container.CreateItemAsync<Family>(ZaalFamily, new PartitionKey(ZaalFamily.LastName));
 
                 // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
@@ -175,7 +175,7 @@ namespace PacktCosmosApp
             }
             catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
             {
-                // Create an item in the container representing the Wakefield family. Note we provide the value of the partition key for this item, which is "Wakefield"
+                // Create an item in the container representing the Wakefield family. Note we provide the value of the partition key for this item, which is "PacktPub"
                 ItemResponse<Family> packtPubFamilyResponse = await this.container.CreateItemAsync<Family>(PacktPubFamily, new PartitionKey(PacktPubFamily.LastName));
 
                 // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.

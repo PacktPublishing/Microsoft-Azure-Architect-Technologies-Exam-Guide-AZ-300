@@ -10,11 +10,11 @@ Get-AzSubscription -SubscriptionId "60ad227c-01b2-4da3-ac97-43e704fdba0c"
 
 #Get a reference to the endpoint and the key
 $endpoint = (Get-AzEventGridTopic -ResourceGroupName `
-            PackEventGridResourceGroup `
+            PacktEventGridResourceGroup `
             -Name PacktEventGridTopic).Endpoint
 
 $keys = Get-AzEventGridTopicKey `
-        -ResourceGroupName PackEventGridResourceGroup `
+        -ResourceGroupName PacktEventGridResourceGroup `
         -Name PacktEventGridTopic
 
 #create a random event Id

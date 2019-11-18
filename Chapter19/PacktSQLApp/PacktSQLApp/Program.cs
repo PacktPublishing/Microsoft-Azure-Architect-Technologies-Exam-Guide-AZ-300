@@ -166,18 +166,8 @@ namespace PacktSQLApp
 
                     connection.Open();
                     cmd.ExecuteNonQuery();
+                    connection.Close();
 
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            for (int i = 0; i < reader.FieldCount; i++)
-                            {
-                                Console.WriteLine(reader.GetValue(i));
-                            }
-                            connection.Close();
-                        }
-                    }
                     Console.WriteLine("\nFinished deleting employee");
                     Console.WriteLine("=========================================\n");
                 }

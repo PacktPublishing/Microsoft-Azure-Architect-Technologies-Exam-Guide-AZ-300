@@ -16,7 +16,7 @@ Function Invoke-WindowsApi(
     [Object[]] $parameters 
     )
 {
-  ## Begin to build the dynamic assembly 
+  # Begin to build the dynamic assembly:
   $domain = [AppDomain]::CurrentDomain 
   $name = New-Object Reflection.AssemblyName 'PInvokeAssembly' 
   $assembly = $domain.DefineDynamicAssembly($name, 'Run') 
@@ -32,12 +32,12 @@ Function Invoke-WindowsApi(
 
   $method = $type.DefineMethod($methodName, 'Public,HideBySig,Static,PinvokeImpl',$returnType, $parameterTypes) 
 
-  ## Apply the P/Invoke constructor 
+  # Apply the P/Invoke constructor:
   $ctor = [Runtime.InteropServices.DllImportAttribute].GetConstructor([string]) 
   $attr = New-Object Reflection.Emit.CustomAttributeBuilder $ctor, $dllName 
   $method.SetCustomAttribute($attr) 
 
-  ## Create the temporary type, and invoke the method. 
+  # Create the temporary type, and invoke the method:
   $realType = $type.CreateType() 
 
   $ret = $realType.InvokeMember($methodName, 'Public,Static,InvokeMethod', $null, $null, $inputParameters) 
@@ -51,11 +51,11 @@ Function Set-PrivateProfileString(
     $key, 
     $value) 
 {
-  ## Prepare the parameter types and parameter values for the Invoke-WindowsApi script 
+  # Prepare the parameter types and parameter values for the Invoke-WindowsApi script:
   $parameterTypes = [string], [string], [string], [string] 
   $parameters = [string] $category, [string] $key, [string] $value, [string] $file 
 
-  ## Invoke the API 
+  # Invoke the API:
   [void] (Invoke-WindowsApi "kernel32.dll" ([UInt32]) "WritePrivateProfileString" $parameterTypes $parameters)
 }
 
@@ -66,7 +66,7 @@ Add-WindowsFeature -name Routing -IncludeManagementTools
 
 # !!! NOTE: A reboot of the machine might be required here after which the script can be executed again.
 
-# Install S2S VPN
+# Install S2S VPN:
 Import-Module RemoteAccess
 if ((Get-RemoteAccess).VpnS2SStatus -ne "Installed")
 {
@@ -85,12 +85,12 @@ Set-VpnServerIPsecConfiguration -EncryptionType MaximumEncryption
 Set-VpnS2Sinterface `
 -Name <IP address of your Azure gateway> `-InitiateConfigPayload $false `-Force
 
-# Set S2S VPN connection to be persistent by editing the router.pbk file (required admin priveleges)
+# Set S2S VPN connection to be persistent by editing the router.pbk file (required admin priveleges):
 Set-PrivateProfileString $env:windir\System32\ras\router.pbk "<IP address of your Azure gateway>" "IdleDisconnectSeconds" "0"
 Set-PrivateProfileString $env:windir\System32\ras\router.pbk "<IP address of your Azure gateway>" "RedialOnLinkFailure" "1"
 
-# Restart the RRAS service
+# Restart the RRAS service:
 Restart-Service RemoteAccess
 
-# Dial-in to Azure gateway
+# Dial-in to Azure gateway:
 Connect-VpnS2SInterface `-Name <IP address of your Azure gateway>

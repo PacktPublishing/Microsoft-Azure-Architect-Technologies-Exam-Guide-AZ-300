@@ -1,9 +1,11 @@
-﻿Connect-AzAccount
+﻿#First connect to your Azure Account:
+Connect-AzAccount
 
-Get-AzSubscription -SubscriptionId "********-****-****-****-***********"
+#If necessary, select the right subscription:
+Select-AzSubscription -SubscriptionId "********-****-****-****-***********"
 
 #Create first VNet
-#Define variables
+#Define variables:
 $RG1 = "PacktResourceGroup1"
 $Location1 = "East US"
 $VNetName1 = "PacktVNet1"
@@ -19,29 +21,29 @@ $GWIPName1 = "PacktVNet1GWIP"
 $GWIPconfName1 = "gwipconf1"
 $Connection01 = "VNet1toVNet2"
 
-#Create a resource group
+#Create a resource group:
 New-AzResourceGroup -Name $RG1 -Location $Location1
 
-#Create the subnet configurations for PacktVNet1
+#Create the subnet configurations for PacktVNet1:
 $fesub1 = New-AzVirtualNetworkSubnetConfig -Name $FESubName1 -AddressPrefix $FESubPrefix1
 $besub1 = New-AzVirtualNetworkSubnetConfig -Name $BESubName1 -AddressPrefix $BESubPrefix1
 $gwsub1 = New-AzVirtualNetworkSubnetConfig -Name "GatewaySubnet" -AddressPrefix $GWSubPrefix1
 
-#Create PacktVNet1
+#Create PacktVNet1:
 New-AzVirtualNetwork -Name $VNetName1 `
     -ResourceGroupName $RG1 `
     -Location $Location1 `
     -AddressPrefix $VNetPrefix01,$VNetPrefix02 `
     -Subnet $fesub1,$besub1,$gwsub1
 
-#Request a public IP for the gateway
+#Request a public IP for the gateway:
 $gwpip1 = New-AzPublicIpAddress `
     -Name $GWIPName1 `
     -ResourceGroupName $RG1 `
     -Location $Location1 `
     -AllocationMethod Dynamic
 
-#Create the gateway configurations
+#Create the gateway configurations:
 $vnet1 = Get-AzVirtualNetwork `
     -Name $VNetName1 `
     -ResourceGroupName $RG1
@@ -53,7 +55,7 @@ $gwipconf1 = New-AzVirtualNetworkGatewayIpConfig `
     -Subnet $subnet1 `
     -PublicIpAddress $gwpip1
 
-#Create the gateway
+#Create the gateway:
 New-AzVirtualNetworkGateway `
     -Name $GWName1 `
     -ResourceGroupName $RG1 `
@@ -65,7 +67,7 @@ New-AzVirtualNetworkGateway `
 
 
 #Create second VNet
-#Define variables
+#Define variables:
 $RG2 = "PacktResourceGroup2"
 $Location2 = "West US"
 $VNetName2 = "PacktVNet2"
@@ -81,15 +83,15 @@ $GWIPName2 = "PacktVNet1GWIP"
 $GWIPconfName2 = "gwipconf2"
 $Connection02 = "VNet2toVNet1"
 
-#Create a resource group
+#Create a resource group:
 New-AzResourceGroup -Name $RG2 -Location $Location2
 
-#Create the subnet configurations for PacktVNet2
+#Create the subnet configurations for PacktVNet2:
 $fesub2 = New-AzVirtualNetworkSubnetConfig -Name $FESubName2 -AddressPrefix $FESubPrefix2
 $besub2 = New-AzVirtualNetworkSubnetConfig -Name $BESubName2 -AddressPrefix $BESubPrefix2
 $gwsub2 = New-AzVirtualNetworkSubnetConfig -Name "GatewaySubnet" -AddressPrefix $GWSubPrefix2
 
-#Create PacktVNet2
+#Create PacktVNet2:
 New-AzVirtualNetwork `
     -Name $VnetName2 `
     -ResourceGroupName $RG2 `
@@ -97,14 +99,14 @@ New-AzVirtualNetwork `
     -AddressPrefix $VnetPrefix11,$VnetPrefix12 `
     -Subnet $fesub2,$besub2,$gwsub2
 
-#Request a public IP address
+#Request a public IP address:
 $gwpip2 = New-AzPublicIpAddress `
     -Name $GWIPName2 `
     -ResourceGroupName $RG2 `
     -Location $Location2 `
     -AllocationMethod Dynamic
 
-#Create the gateway configuration
+#Create the gateway configuration:
 $vnet2 = Get-AzVirtualNetwork `
     -Name $VnetName2 `
     -ResourceGroupName $RG2
@@ -116,8 +118,7 @@ $gwipconf2 = New-AzVirtualNetworkGatewayIpConfig `
     -Subnet $subnet2 `
     -PublicIpAddress $gwpip2
 
-
-#Create the gateway
+#Create the gateway:
 New-AzVirtualNetworkGateway -Name $GWName2 `
     -ResourceGroupName $RG2 `
     -Location $Location2 `
@@ -148,6 +149,6 @@ New-AzVirtualNetworkGatewayConnection `
     -ConnectionType Vnet2Vnet `
     -SharedKey 'AzurePacktGateway'
 
-#Verify the connections
+#Verify the connections:
 Get-AzVirtualNetworkGatewayConnection -Name $Connection01 -ResourceGroupName $RG1
 Get-AzVirtualNetworkGatewayConnection -Name $Connection02 -ResourceGroupName $RG2

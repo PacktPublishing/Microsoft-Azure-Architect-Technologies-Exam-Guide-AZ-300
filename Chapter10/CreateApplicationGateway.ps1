@@ -1,22 +1,22 @@
-﻿# First connect to your Azure Account.
+﻿# First connect to your Azure Account:
 Connect-AzAccount
 
-# Select the subscription to deploy the App to.
-Get-AzSubscription -SubscriptionId "********-****-****-****-***********"
+#If necessary, select the right subscription:
+Select-AzSubscription -SubscriptionId "********-****-****-****-***********"
 
-#Create a resource group
+#Create a resource group:
 New-AzResourceGroup -Name PacktApplicationGateway -Location EastUS
 
-#Create the network resources
+#Create the network resources:
 $PacktAGSubnet = New-AzVirtualNetworkSubnetConfig `
   -Name PacktAGSubnet `  -AddressPrefix 10.0.1.0/24
 
-#Create the subnets
+#Create the subnets:
 $PacktBackendSubnetConfig = New-AzVirtualNetworkSubnetConfig `
   -Name PacktBackendSubnetConfig `
   -AddressPrefix 10.0.2.0/24
 
-#Create the VNet 
+#Create the VNet:
 $vnet = New-AzVirtualNetwork `
   -ResourceGroupName PacktApplicationGateway `
   -Location eastus `
@@ -24,19 +24,19 @@ $vnet = New-AzVirtualNetwork `
   -AddressPrefix 10.0.0.0/16 `
   -Subnet $PacktAGSubnet, $PacktBackendSubnetConfig
 
-#Create the public IP address
+#Create the public IP address:
 $pip = New-AzPublicIpAddress `
   -ResourceGroupName PacktApplicationGateway `
   -Location eastus `
   -Name PacktAGPublicIPAddress `
   -AllocationMethod Dynamic
 
-#Create the VMs
+#Create the VMs:
 $vnet = Get-AzVirtualNetwork -ResourceGroupName PacktApplicationGateway -Name PacktVNet
 $cred = Get-Credential
 for ($i=1; $i -le 2; $i++)
 {
-# Create a virtual machine
+# Create a virtual machine:
   $nic = New-AzNetworkInterface `
     -Name PacktNic$i `
     -ResourceGroupName PacktApplicationGateway `    -Location eastus `
@@ -75,7 +75,7 @@ for ($i=1; $i -le 2; $i++)
     -Location EastUS
 }
 
-# Create IP configurations and frontend port
+# Create IP configurations and frontend port:
 $vnet = Get-AzVirtualNetwork `
   -ResourceGroupName PacktApplicationGateway `
   -Name PacktVNet
@@ -90,7 +90,7 @@ $frontendport = New-AzApplicationGatewayFrontendPort `
   -Name PacktFrontendPort `
   -Port 80
 
-# Create the backend pool and settings
+# Create the backend pool and settings:
 $address1 = Get-AzNetworkInterface -ResourceGroupName PacktApplicationGateway -Name PacktNic1
 $address2 = Get-AzNetworkInterface -ResourceGroupName PacktApplicationGateway -Name PacktNic2
 
@@ -104,7 +104,7 @@ $poolSettings = New-AzApplicationGatewayBackendHttpSettings `
   -CookieBasedAffinity Enabled `
   -RequestTimeout 120
 
-# Create the default listener and rule
+# Create the default listener and rule:
 $defaultlistener = New-AzApplicationGatewayHttpListener `
   -Name PacktAGListener `
   -Protocol Http `
@@ -117,7 +117,7 @@ $frontendRule = New-AzApplicationGatewayRequestRoutingRule `
   -BackendAddressPool $backendPool `
   -BackendHttpSettings $poolSettings
 
-#Create the Application Gateway
+#Create the Application Gateway:
 $sku = New-AzApplicationGatewaySku -Name Standard_Medium -Tier Standard -Capacity 2
 
 New-AzApplicationGateway `
@@ -133,7 +133,5 @@ New-AzApplicationGateway `
   -RequestRoutingRules $frontendRule `
   -Sku $sku
 
-
-
-# Get the IP address
+# Get the IP address:
 Get-AzPublicIPAddress -ResourceGroupName PacktApplicationGateway -Name PacktAGPublicIPAddress

@@ -2,10 +2,7 @@
 Connect-AzAccount
 
 #If necessary, select the right subscription:
-#Select-AzSubscription -SubscriptionId "********-****-****-****-***********"
-
-
-Select-AzSubscription -SubscriptionId "60ad227c-01b2-4da3-ac97-43e704fdba0c"
+Select-AzSubscription -SubscriptionId "********-****-****-****-***********"
 
 #Create a resource group for the Storage account:
 New-AzResourceGroup -Name PacktPubWebJobStorageAccount -Location EastUS

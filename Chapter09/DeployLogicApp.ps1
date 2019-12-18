@@ -1,14 +1,14 @@
-﻿# First connect to your Azure Account.
+﻿# First connect to your Azure Account:
 Connect-AzAccount
 
-# Select the subscription to deploy the App to.
-Get-AzSubscription -SubscriptionId "********-****-****-****-***********"
+#If necessary, select the right subscription:
+Select-AzSubscription -SubscriptionId "********-****-****-****-***********"
 
-#Create a resource group
+#Create a resource group:
 New-AzResourceGroup -Name PacktLogicAppResourceGroup -Location EastUS
 
-#Deploy the template inside your Azure subscription 
-New-AzRmResourceGroupDeployment `
+#Deploy the template inside your Azure subscription:
+New-AzResourceGroupDeployment `
     -Name PacktDeployment `
     -ResourceGroupName PacktLogicAppResourceGroup `
     -TemplateFile c:\MyTemplates\template.json

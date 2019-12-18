@@ -1,28 +1,28 @@
-# First connect to your Azure Account
+#First connect to your Azure Account:
 Connect-AzAccount
 
-#Select the subscription to deploy the App to.
-Get-AzSubscription -SubscriptionId "********-****-****-****-***********"
+#If necessary, select the right subscription:
+Select-AzSubscription -SubscriptionId "********-****-****-****-***********"
 
 #URL to the sample application on GitHub
 $gitrepo="https://github.com/Azure-Samples/app-service-web-dotnet-get-started.git"
 $webappname="PacktWebApp"
 
-#Create the web app.
+#Create the web app:
 New-AzWebApp `
     -Name $webappname `
     -Location "East US" `
     -AppServicePlan PacktAppServicePlan `
     -ResourceGroupName PacktAppServicePlan
 
-#Configure GitHub deployment from your GitHub repo
+#Configure GitHub deployment from your GitHub repo:
 $PropertiesObject = @{
     repoUrl = "$gitrepo";
     branch = "master";
     isManualIntegration = "true";
 }
 
-#Deploy the GitHub web app to the web app.
+#Deploy the GitHub web app to the web app:
 Set-AzResource `
     -PropertyObject $PropertiesObject `
     -ResourceGroupName PacktAppServicePlan `

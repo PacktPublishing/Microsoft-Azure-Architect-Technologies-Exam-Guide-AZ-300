@@ -2,7 +2,7 @@
 Connect-AzAccount
 
 #If necessary, select the right subscription:
-Get-AzSubscription -SubscriptionId "********-****-****-****-***********"
+Select-AzSubscription -SubscriptionId "********-****-****-****-***********"
 
 #Create a resource group for the Availability Set:
 New-AzResourceGroup -Name PacktVMResourceGroup -Location EastUS

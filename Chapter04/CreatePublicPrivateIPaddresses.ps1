@@ -1,13 +1,14 @@
-﻿Connect-AzAccount
+﻿#First, we need to login to the Azure account:
+Connect-AzAccount
 
 #If necessary, select the right subscription:
-Get-AzSubscription -SubscriptionId "********-****-****-****-***********"
+Select-AzSubscription -SubscriptionId "********-****-****-****-***********"
 
-#retrieve VNet and subnet configuration
+#retrieve VNet and subnet configuration:
 $vnet = Get-AzVirtualNetwork -Name PacktVirtualNetwork -ResourceGroupName PacktVNetResourceGroup
 $subnet = Get-AzVirtualNetworkSubnetConfig -Name default -VirtualNetwork $vnet 
 
-#Create a private and public ip address and assign them to the config
+#Create a private and public ip address and assign them to the config:
 $publicIP = New-AzPublicIpAddress `
     -Name PacktPublicIP `
     -ResourceGroupName PacktVNetResourceGroup `
@@ -21,7 +22,7 @@ $IpConfig = New-AzNetworkInterfaceIpConfig `
   -PublicIPAddress $publicIP `
   -Primary
 
-#Create a network interface and assign the config to it
+#Create a network interface and assign the config to it:
 $NIC = New-AzNetworkInterface `
   -Name PacktNIC `
   -ResourceGroupName PacktVNetResourceGroup `
